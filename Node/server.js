@@ -29,6 +29,9 @@ app.use(cors({
 
 app.use(express.json());
 
+// ===== Serve Frontend Static Files =====
+app.use(express.static('public'));
+
 // ===== Health check endpoint =====
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
