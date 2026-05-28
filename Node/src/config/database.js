@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 
-const db = new Database('esports.db', { verbose: console.log });
+const dbPath = process.env.DATABASE_PATH || 'esports.db';
+const db = new Database(dbPath, { verbose: console.log });
 
 const initDb = () => {
 
