@@ -98,15 +98,29 @@ nav {
 /* ---------- FORMS ---------- */
 .form-group { margin-bottom: 1rem; }
 .form-group label { display: block; font-size: 0.83rem; color: var(--muted); margin-bottom: 0.35rem; font-weight: 500; }
-.form-group input,
+.form-group input:not([type="checkbox"]),
 .form-group select,
 .form-group textarea {
-  width: 100%; padding: 0.65rem 0.85rem;
-  background: var(--surface2); border: 1px solid var(--border2);
-  border-radius: var(--radius-sm); color: var(--text);
-  font-family: var(--font-body); font-size: 0.95rem;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   transition: border 0.2s, box-shadow 0.2s;
-  -webkit-appearance: none; appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.checkbox-label input[type="checkbox"] {
+  appearance: auto !important;
+  -webkit-appearance: checkbox !important;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
 }
 .form-group input:focus,
 .form-group select:focus,
@@ -336,7 +350,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="nav-links">
       <button class="nav-btn active-nav" onclick="showPage('home')" id="nav-home">Início</button>
       <button class="nav-btn" onclick="showPage('inscricao')" id="nav-inscricao">Inscrição</button>
-      <button class="nav-btn" onclick="showPage('chaveamento')" id="nav-chaveamento">Chaveamento</button>
+      <button class="nav-btn" onclick="showPage('chaveamento')" id="nav-chaveamento">Pontuação</button>
       <button class="nav-btn" onclick="showPage('admin')" id="nav-admin">Admin</button>
     </div>
   </div>
@@ -352,15 +366,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="container hero-content">
       <div class="hero-eyebrow">Faculdade UNIS São Lourenço · 2026</div>
       <h1>Campeonato<br><span>UNIS eSports</span></h1>
-      <p>Torneio estudantil de esportes eletrônicos promovido em parceria com as escolas da SRE de Caxambu. Inclusão, tecnologia e trabalho em equipe.</p>
+      <p>Torneio estudantil de esportes eletrônicos promovido em parceria com as escolas da SRE de Caxambu. Inclusão, tecnologia e trabalho em equipe.</p><div class="alert alert-success" style="max-width:420px;margin-bottom:1.5rem;"><strong>Premiação:</strong> O time campeão levará R$ 1.000,00 em premiação.</div>
       <div class="hero-actions">
         <button class="btn btn-primary" onclick="showPage('inscricao')">Fazer inscrição</button>
-        <button class="btn btn-outline" onclick="showPage('chaveamento')">Ver chaveamento</button>
+        <button class="btn btn-outline" onclick="showPage('chaveamento')">Ver pontuação</button>
       </div>
       <div class="hero-stats">
         <div class="stat-item"><div class="stat-value" id="stat-participants">0</div><div class="stat-label">Participantes inscritos</div></div>
         <div class="stat-item"><div class="stat-value" id="stat-teams">0</div><div class="stat-label">Times / Jogadores</div></div>
-        <div class="stat-item"><div class="stat-value">3</div><div class="stat-label">Modalidades</div></div>
+        <div class="stat-item"><div class="stat-value">1</div><div class="stat-label">Modalidade</div></div>
       </div>
     </div>
   </div>
@@ -370,8 +384,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <p class="text-muted text-sm">Selecione sua modalidade no formulário de inscrição.</p>
     <div class="game-cards">
       <div class="game-card"><div class="game-icon">🎮</div><div class="game-name">Free Fire</div><div class="game-mode">Times de 4 · Battle Royale</div><span class="badge badge-amber mt-1">Mobile</span></div>
-      <div class="game-card"><div class="game-icon">⚔️</div><div class="game-name">League of Legends</div><div class="game-mode">Times de 5 · MOBA</div><span class="badge badge-blue mt-1">PC / Mobile</span></div>
-      <div class="game-card"><div class="game-icon">⚽</div><div class="game-name">EA FC / FIFA</div><div class="game-mode">Individual · 1v1</div><span class="badge badge-green mt-1">Individual</span></div>
     </div>
 
     <div class="card mt-3">
@@ -399,24 +411,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
     <!-- STEP 1 -->
     <div id="reg-step1">
-      <div class="section-header"><h1>Inscrição</h1><p>Escolha a modalidade e o tipo de participação.</p></div>
+      <div class="section-header"><h1>Inscrição</h1><p>As inscrições são permitidas apenas para times completos.</p></div>
       <div class="form-group">
         <label>Modalidade / Jogo</label>
         <select id="reg-game" onchange="updateRegType()">
           <option value="">— Selecione —</option>
           <option value="freefire">Free Fire (times de 4)</option>
-          <option value="lol">League of Legends (times de 5)</option>
-          <option value="fifa">EA FC / FIFA (individual)</option>
         </select>
       </div>
-      <div class="form-group" id="reg-type-group" style="display:none;">
-        <label>Tipo de inscrição</label>
-        <select id="reg-type">
-          <option value="individual">Individual (será alocado em um time)</option>
-          <option value="team">Time completo</option>
-        </select>
-      </div>
-      <div id="reg-game-info" style="display:none;" class="info-box"></div>
+<div id="reg-game-info" style="display:none;" class="info-box"></div>
       <div class="flex-between mt-2"><span></span><button class="btn btn-primary" onclick="goStep2()">Próximo →</button></div>
     </div>
 
@@ -495,7 +498,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <div id="reg-step3" style="display:none; text-align:center; padding:2.5rem 0;">
       <div style="font-size:2.75rem;">🎮</div>
       <div class="h3" style="font-size:1.4rem; margin-top:0.85rem;">Inscrição confirmada!</div>
-      <p class="text-muted" style="max-width:400px; margin:0.5rem auto 1.75rem; font-size:0.9rem;">Guarde seu número de inscrição. Você será notificado pela escola sobre as datas e chaves das partidas.</p>
+      <p class="text-muted" style="max-width:400px; margin:0.5rem auto 1.75rem; font-size:0.9rem;">Guarde seu número de inscrição. Você será notificado pela escola sobre a tabela de pontuação e próximas partidas.</p>
       <div class="card" style="display:inline-block; min-width:210px; text-align:left;">
         <div class="detail-row"><span class="detail-label">Nº de inscrição</span><span id="conf-id" class="detail-val" style="color:var(--accent);font-weight:600;"></span></div>
         <div class="detail-row"><span class="detail-label">Participante</span><span id="conf-name" class="detail-val"></span></div>
@@ -503,7 +506,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <div class="detail-row"><span class="detail-label">Time</span><span id="conf-team" class="detail-val"></span></div>
       </div>
       <div style="margin-top:1.75rem; display:flex; gap:0.65rem; justify-content:center; flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="showPage('chaveamento')">Ver chaveamento</button>
+        <button class="btn btn-primary" onclick="showPage('chaveamento')">Ver pontuação</button>
         <button class="btn btn-outline" onclick="resetForm()">Nova inscrição</button>
       </div>
     </div>
@@ -516,16 +519,23 @@ tr:hover td { background: rgba(255,255,255,0.02); }
      ================================================================ -->
 <div id="page-chaveamento" class="page">
   <div class="container-wide" style="padding:2rem 1rem 4rem;">
-    <div class="section-header"><h1>Chaveamento</h1><p>Acompanhe as partidas e os resultados de cada modalidade.</p></div>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchBracketTab('freefire',this)">🎮 Free Fire</button>
-      <button class="tab-btn" onclick="switchBracketTab('lol',this)">⚔️ League of Legends</button>
-      <button class="tab-btn" onclick="switchBracketTab('fifa',this)">⚽ EA FC / FIFA</button>
+    <div class="section-header"><h1>Tabela de pontuação</h1><p>Acompanhe a classificação atual das equipes inscritas.</p></div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Equipe</th>
+              <th>Pontos</th>
+            </tr>
+          </thead>
+          <tbody id="score-table-body"></tbody>
+        </table>
+      </div>
     </div>
-    <div id="bracket-freefire" class="tab-pane active"><div id="bracket-freefire-content"></div></div>
-    <div id="bracket-lol" class="tab-pane"><div id="bracket-lol-content"></div></div>
-    <div id="bracket-fifa" class="tab-pane"><div id="bracket-fifa-content"></div></div>
   </div>
+</div>
 </div>
 
 <!-- ================================================================
@@ -538,7 +548,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       <div class="card login-card">
         <h2>Painel administrativo</h2>
         <p>Acesso restrito a coordenadores do projeto.</p>
-        <div class="form-group"><label>Usuário</label><input type="text" id="login-user" placeholder="admin" autocomplete="username"></div>
+        <div class="form-group"><label>Usuário</label><input type="text" id="login-user" placeholder="usuário" autocomplete="username"></div>
         <div class="form-group"><label>Senha</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" autocomplete="current-password"></div>
         <div id="login-error" class="alert alert-error" style="display:none;">Usuário ou senha incorretos.</div>
         <button class="btn btn-primary" style="width:100%;" onclick="doLogin()">Entrar</button>
@@ -549,7 +559,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <div id="admin-dashboard" style="display:none;">
     <div class="container-wide" style="padding:2rem 1rem 4rem;">
       <div class="flex-between" style="margin-bottom:1.75rem;">
-        <div class="section-header" style="margin-bottom:0;"><h1>Painel administrativo</h1><p>Gerencie participantes e chaves do torneio.</p></div>
+        <div class="section-header" style="margin-bottom:0;"><h1>Painel administrativo</h1><p>Gerencie participantes e a pontuação das equipes.</p></div>
         <button class="btn btn-outline btn-sm" onclick="doLogout()">Sair</button>
       </div>
 
@@ -562,7 +572,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
       <div class="tabs">
         <button class="tab-btn active" onclick="switchAdminTab('participants',this)">Participantes</button>
-        <button class="tab-btn" onclick="switchAdminTab('bracket-admin',this)">Gerenciar chaves</button>
+        <button class="tab-btn" onclick="switchAdminTab('bracket-admin',this)">Gerenciar pontuação</button>
       </div>
 
       <!-- PARTICIPANTS -->
@@ -589,38 +599,25 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
       </div>
 
-      <!-- BRACKET ADMIN -->
+      <!-- SCORE ADMIN -->
       <div id="adm-tab-bracket-admin" class="tab-pane">
-        <div class="alert alert-warn" style="font-size:0.83rem;">
-          <strong>Atenção:</strong> Ao gerar o chaveamento, os times são sorteados aleatoriamente. Os resultados das partidas são avançados manualmente.
+        <div class="alert alert-info" style="font-size:0.83rem;">
+          Edite manualmente a pontuação das equipes. A classificação é atualizada automaticamente.
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:1.75rem;">
-          <div class="card">
-            <div class="h3">🎮 Free Fire</div>
-            <div id="adm-ff-status" class="text-muted text-sm"></div>
-            <div style="margin-top:0.85rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-              <button class="btn btn-primary btn-sm" onclick="generateBracket('freefire')">Gerar chaveamento</button>
-              <button class="btn btn-outline btn-sm" onclick="resetBracket('freefire')">Resetar</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="h3">⚔️ League of Legends</div>
-            <div id="adm-lol-status" class="text-muted text-sm"></div>
-            <div style="margin-top:0.85rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-              <button class="btn btn-primary btn-sm" onclick="generateBracket('lol')">Gerar chaveamento</button>
-              <button class="btn btn-outline btn-sm" onclick="resetBracket('lol')">Resetar</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="h3">⚽ EA FC / FIFA</div>
-            <div id="adm-fifa-status" class="text-muted text-sm"></div>
-            <div style="margin-top:0.85rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-              <button class="btn btn-primary btn-sm" onclick="generateBracket('fifa')">Gerar chaveamento</button>
-              <button class="btn btn-outline btn-sm" onclick="resetBracket('fifa')">Resetar</button>
-            </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Equipe</th>
+                  <th>Pontos</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="admin-score-table"></tbody>
+            </table>
           </div>
         </div>
-        <div id="adm-match-editor"></div>
       </div>
 
     </div>
@@ -870,29 +867,39 @@ const DB = {
 // GAME CONFIG
 // ================================================================
 const GAMES = {
-  freefire: { name: 'Free Fire',         teamSize: 4, type: 'team',       emoji: '🎮' },
-  lol:      { name: 'League of Legends', teamSize: 5, type: 'team',       emoji: '⚔️' },
-  fifa:     { name: 'EA FC / FIFA',      teamSize: 1, type: 'individual', emoji: '⚽' }
+  freefire: { name: 'Free Fire', teamSize: 4, type: 'team', emoji: '🎮' }
 };
 
 // ================================================================
 // NAVIGATION
 // ================================================================
-function showPage(id) {
+async function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
+
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
   const nb = document.getElementById('nav-' + id);
   if (nb) nb.classList.add('active-nav');
+
   window.scrollTo(0, 0);
-  if (id === 'chaveamento') renderAllBrackets();
+
+  if (id === 'chaveamento') renderScoreTable();
   if (id === 'home') updateHomeStats();
+
   if (id === 'admin') {
-    if (DB.getSession()) showAdminDashboard();
-    else { document.getElementById('admin-login').style.display = ''; document.getElementById('admin-dashboard').style.display = 'none'; }
+    const logged = await DB.getSession();
+
+    if (logged) {
+      showAdminDashboard();
+    } else {
+      document.getElementById('admin-login').style.display = '';
+      document.getElementById('admin-dashboard').style.display = 'none';
+      document.getElementById('login-error').style.display = 'none';
+      document.getElementById('login-user').value = '';
+      document.getElementById('login-pass').value = '';
+    }
   }
 }
-
 // ================================================================
 // REGISTRATION
 // ================================================================
@@ -900,28 +907,25 @@ let regData = {};
 
 function updateRegType() {
   const game = document.getElementById('reg-game').value;
-  const typeGroup = document.getElementById('reg-type-group');
   const infoBox = document.getElementById('reg-game-info');
-  if (!game) { typeGroup.style.display = 'none'; infoBox.style.display = 'none'; return; }
+
+  if (!game) {
+    infoBox.style.display = 'none';
+    return;
+  }
+
   const g = GAMES[game];
   infoBox.style.display = '';
-  if (g.type === 'individual') {
-    infoBox.innerHTML = `<strong>${g.emoji} ${g.name}</strong> — Modalidade individual (1v1). Cada jogador se inscreve sozinho.`;
-    typeGroup.style.display = 'none';
-    document.getElementById('reg-type').value = 'individual';
-  } else {
-    infoBox.innerHTML = `<strong>${g.emoji} ${g.name}</strong> — Times de ${g.teamSize} jogadores. Inscreva-se individualmente (será alocado) ou inscreva o time completo.`;
-    typeGroup.style.display = '';
-  }
+  infoBox.innerHTML = `<strong>${g.emoji} ${g.name}</strong> — Times de ${g.teamSize} jogadores. Apenas inscrições de times completos são permitidas.`;
 }
 
 function goStep2() {
   const game = document.getElementById('reg-game').value;
   if (!game) { alert('Selecione uma modalidade.'); return; }
   regData.game = game;
-  regData.type = document.getElementById('reg-type').value;
+  regData.type = 'team';
   const g = GAMES[game];
-  const isTeam = regData.type === 'team' && g.type === 'team';
+  const isTeam = true;
   document.getElementById('reg-main-label').textContent = isTeam ? 'Líder do time' : 'Dados do participante';
   document.getElementById('reg-team-section').style.display = isTeam ? '' : 'none';
   if (isTeam) buildMemberInputs(g.teamSize - 1);
@@ -980,7 +984,7 @@ function submitRegistration() {
   if (!rules) { showErr('Você deve confirmar que leu e aceita as regras do torneio.'); return; }
 
   const g = GAMES[regData.game];
-  const isTeam = regData.type === 'team' && g.type === 'team';
+  const isTeam = true;
   let teamName = '', members = [];
   if (isTeam) {
     teamName = document.getElementById('reg-team-name').value.trim();
@@ -1040,8 +1044,7 @@ function resetForm() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  document.getElementById('reg-type').value = 'individual';
-  document.getElementById('reg-type-group').style.display = 'none';
+
   document.getElementById('reg-game-info').style.display = 'none';
   document.getElementById('reg-team-section').style.display = 'none';
   document.getElementById('reg-minor-section').style.display = 'none';
@@ -1051,6 +1054,73 @@ function resetForm() {
   document.getElementById('reg-step3').style.display = 'none';
   document.getElementById('reg-step1').style.display = '';
   setStepState(1);
+}
+
+// ================================================================
+// SCOREBOARD
+// ================================================================
+async function getTeamsWithPoints() {
+  const participants = await DB.getParticipants();
+  const teams = {};
+
+  participants.forEach(p => {
+    const team = p.team_name || p.nick;
+    if (!teams[team]) {
+      teams[team] = { name: team, points: p.points || 0 };
+    }
+  });
+
+  return Object.values(teams).sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+}
+
+async function renderScoreTable() {
+  const tbody = document.getElementById('score-table-body');
+  if (!tbody) return;
+
+  const teams = await getTeamsWithPoints();
+
+  tbody.innerHTML = teams.length ? teams.map((team, index) => `
+    <tr>
+      <td>${index + 1}</td>
+      <td>${team.name}</td>
+      <td>${team.points}</td>
+    </tr>
+  `).join('') : '<tr><td colspan="3" class="empty-state">Nenhum time inscrito.</td></tr>';
+}
+
+async function renderAdminScoreTable() {
+  const tbody = document.getElementById('admin-score-table');
+  if (!tbody) return;
+
+  const participants = await DB.getParticipants();
+  const teams = await getTeamsWithPoints();
+
+  tbody.innerHTML = teams.map(team => {
+    const captain = participants.find(p => (p.team_name || p.nick) === team.name);
+    return `
+      <tr>
+        <td>${team.name}</td>
+        <td><input type="number" min="0" value="${team.points}" id="points-${captain.id}" style="width:90px;padding:0.4rem;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);"></td>
+        <td><button class="btn btn-primary btn-sm" onclick="updateTeamPoints(${captain.id})">Salvar</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function updateTeamPoints(id) {
+  const participants = await DB.getParticipants();
+  const current = participants.find(p => p.id === id);
+  if (!current) return;
+
+  const points = parseInt(document.getElementById(`points-${id}`).value) || 0;
+
+  await DB.apiCall(`/participants/${id}`, 'PUT', {
+    ...current,
+    points
+  });
+
+  renderScoreTable();
+  renderAdminScoreTable();
 }
 
 // ================================================================
@@ -1107,7 +1177,7 @@ function generateBracket(game) {
       renderAllBrackets();
       renderAdminBracketEditor();
       updateAdminStats();
-      alert(`Chaveamento de ${GAMES[game].name} gerado com ${shuffled.length} participante(s)!`);
+      alert(`Pontuação de ${GAMES[game].name} gerado com ${shuffled.length} participante(s)!`);
     });
   });
 }
@@ -1225,37 +1295,42 @@ function switchBracketTab(game, btn) {
 }
 
 // ================================================================
-// ADMIN AUTH
+// ADMIN LOGIN
 // ================================================================
-function doLogin() {
-  const u = document.getElementById('login-user').value;
-  const p = document.getElementById('login-pass').value;
+async function doLogin() {
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value.trim();
   const errEl = document.getElementById('login-error');
-  
-  DB.adminLogin(u, p).then(result => {
-    if (result.success) {
-      errEl.style.display = 'none';
-      showAdminDashboard();
-    } else {
-      errEl.style.display = '';
-    }
-  }).catch(() => {
-    errEl.style.display = '';
-  });
+
+  errEl.style.display = 'none';
+
+  // Credenciais fixas
+  if (user === 'admin' && pass === 'unis2026') {
+    await DB.setSession(true);
+    showAdminDashboard();
+    return;
+  }
+
+  errEl.style.display = '';
 }
 
-function doLogout() {
-  DB.setSession(false);
+async function doLogout() {
+  await DB.setSession(false);
+
   document.getElementById('admin-login').style.display = '';
   document.getElementById('admin-dashboard').style.display = 'none';
+
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
 }
 
 function showAdminDashboard() {
   document.getElementById('admin-login').style.display = 'none';
   document.getElementById('admin-dashboard').style.display = '';
+
   updateAdminStats();
   renderAdminTable();
-  renderAdminBracketEditor();
+  renderAdminScoreTable();
 }
 
 // ================================================================
@@ -1435,3 +1510,4 @@ updateHomeStats();
 </script>
 </body>
 </html>
+
